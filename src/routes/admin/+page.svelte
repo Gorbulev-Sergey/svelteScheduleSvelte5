@@ -1,21 +1,7 @@
 <script lang="ts">
 	import Title from '$lib/components/Title.svelte';
-
-	interface ISubField {
-		event: string;
-		time: string;
-		pray: string;
-	}
-	function SubField(event: string = '', time: string = '', pray: string = '') {
-		return { event, time, pray };
-	}
-	interface IField {
-		date: string;
-		fields: ISubField[];
-	}
-	function Field(date: string = '', fields: ISubField[] = [SubField()]) {
-		return { date, fields };
-	}
+	import { type IField, Field } from '$lib/entityes/Field';
+	import { SubField } from '$lib/entityes/SubField';
 
 	let date = $state(new Date().toISOString().slice(0, 7));
 	let year = $derived(date.slice(0, 4));
@@ -66,17 +52,27 @@
 					</div>
 				</div>
 			</div>
-			<div class="flex-grow-1 d-flex">
+			<button
+				class="btn btn-dark text-light rounded-0"
+				onclick={() => {
+					item.fields = [...item.fields, SubField()];
+				}}>+</button>
+			<div class="flex-grow-1 d-flex flex-column">
 				{#each item.fields as field, j}
-					<input
-						class="form-control border-dark border-opacity-10 rounded-0"
-						bind:value={arrayMonth[i].fields[j].event} />
-					<input
-						class="form-control border-dark border-opacity-10 rounded-0"
-						bind:value={arrayMonth[i].fields[j].time} />
-					<input
-						class="form-control border-dark border-opacity-10 rounded-0"
-						bind:value={arrayMonth[i].fields[j].pray} />
+					<div class="d-flex h-100">
+						<input
+							class="form-control border-dark border-opacity-10 rounded-0"
+							bind:value={arrayMonth[i].fields[j].event}
+							placeholder="event" />
+						<input
+							type="time"
+							class="form-control border-dark border-opacity-10 rounded-0 w-25"
+							bind:value={arrayMonth[i].fields[j].time} />
+						<input
+							class="form-control border-dark border-opacity-10 rounded-0 w-50"
+							bind:value={arrayMonth[i].fields[j].pray}
+							placeholder="pray" />
+					</div>
 				{/each}
 			</div>
 		</div>
