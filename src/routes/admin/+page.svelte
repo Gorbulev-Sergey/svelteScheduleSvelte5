@@ -4,7 +4,6 @@
 	import { SubField } from '$lib/entityes/SubField';
 	import { db } from '$lib/scripts/firebase';
 	import { get, ref, set } from 'firebase/database';
-	import { onMount } from 'svelte';
 
 	let date = $state(new Date().toISOString().slice(0, 7));
 	let year = $derived(date.slice(0, 4));
@@ -23,16 +22,17 @@
 		arrayMonth = [...Array<IField>(daysInMonth)].map((v, i) =>
 			Field(`${year}-${month}-${i + 1 < 10 ? '0' : ''}${i + 1}`)
 		);
-	});
-
-	onMount(async () => {
 		get(ref(db, `/schedule/${year}/${Number(month)}`)).then((r) => {
 			if (r.exists()) {
 				arrayMonth = [...(Object.values(r.val()) as IField[]), ...arrayMonth];
 				//console.log(r.val());
 			}
 		});
+		console.log('привкет');
 	});
+	function getInputColors(date: string) {
+		return new Date(date).getDay() == 6 ? 'text-primary' : 'text-dark';
+	}
 </script>
 
 <Title title={`Редактировать расписание на <b>${monthToSring} ${year} года </b>`}>
@@ -51,7 +51,6 @@
 						)
 					)
 				);
-				console.log(result);
 				set(ref(db, `/schedule/${year}/${Number(month)}`), result);
 			}}>Сохранить</button>
 	</div>
@@ -59,10 +58,9 @@
 
 <div class="d-flex flex-column mt-3">
 	{#each arrayMonth as item, i}
-		<div class="d-flex">
-			<div
-				class="bg-dark bg-opacity-10 text-dark px-2 py-1 text-nowrap text-end"
-				style="min-width: 15%;">
+		<div
+			class={`d-flex ${new Date(item.date).getDay() == 6 ? 'bg-primary text-primary' : 'bg-light text-dark'} bg-opacity-10 border-bottom`}>
+			<div class={`px-2 py-1 text-nowrap text-end`} style="min-width: 9em;">
 				<div class="d-flex flex-column">
 					<b>{i + 1} {monthToStringWithEnd}</b>
 					<div>
@@ -75,7 +73,7 @@
 			<button
 				class="btn btn-dark text-light rounded-0"
 				onclick={() => {
-					item.fields = [...item.fields, SubField()];
+					item.fields.push(SubField());
 				}}>+</button>
 			<div class="flex-grow-1 d-flex flex-column">
 				{#each item.fields as field, j}
@@ -87,16 +85,18 @@
 									onclick={() => item.fields.splice(j, 1)}>-</button>
 							{/if}
 							<input
-								class="form-control border-dark border-opacity-10 rounded-0"
+								class={`form-control bg-light bg-transparent border-0 rounded-0 ${getInputColors(item.date)}`}
 								bind:value={arrayMonth[i].fields[j].event}
 								placeholder="event" />
 						</div>
 						<input
 							type="time"
-							class="form-control border-dark border-opacity-10 rounded-0 w-25"
+							class={`form-control bg-transparent border-0 rounded-0 ${getInputColors(item.date)}`}
+							style="width: 8em;"
 							bind:value={arrayMonth[i].fields[j].time} />
 						<input
-							class="form-control border-dark border-opacity-10 rounded-0 w-50"
+							class={`form-control bg-transparent border-0 rounded-0 ${getInputColors(item.date)}`}
+							style="width: 26em;"
 							bind:value={arrayMonth[i].fields[j].pray}
 							placeholder="pray" />
 					</div>
