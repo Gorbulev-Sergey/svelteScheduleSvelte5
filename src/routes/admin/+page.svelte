@@ -59,7 +59,7 @@
 <div class="d-flex flex-column mt-3">
 	{#each arrayMonth as item, i}
 		<div
-			class={`d-flex ${new Date(item.date).getDay() == 0 ? 'bg-primary text-primary' : 'bg-light text-dark'} bg-opacity-10 border-bottom`}>
+			class={`d-flex ${new Date(item.date).getDay() == 0 ? 'bg-primary text-primary' : 'bg-light text-dark'} bg-opacity-10  ${i == 0 ? 'rounded-top' : ''} ${i == arrayMonth.length - 1 ? 'rounded-bottom' : 'border-bottom'}`}>
 			<div class={`px-2 py-1 text-nowrap text-end`} style="min-width: 9em;">
 				<div class="d-flex flex-column">
 					<b>{i + 1} {monthToStringWithEnd}</b>
