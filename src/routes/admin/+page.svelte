@@ -4,7 +4,6 @@
 	import { SubField } from '$lib/entityes/SubField';
 	import { db } from '$lib/scripts/firebase';
 	import { get, ref, set } from 'firebase/database';
-	import { onMount } from 'svelte';
 
 	let date = $state(new Date().toISOString().slice(0, 7));
 	let year = $derived(date.slice(0, 4));
@@ -59,7 +58,10 @@
 <div class="d-flex flex-column mt-3">
 	{#each arrayMonth as item, i}
 		<div
-			class={`d-flex ${new Date(item.date).getDay() == 0 ? 'bg-primary text-primary' : 'bg-light text-dark'} bg-opacity-10  ${i == 0 ? 'rounded-top' : ''} ${i == arrayMonth.length - 1 ? 'rounded-bottom' : 'border-bottom'}`}>
+			class={`d-flex 
+						${new Date(item.date).getDay() == 0 ? 'bg-primary text-primary' : 'bg-light text-dark'} bg-opacity-10  
+						${i == 0 ? 'rounded-top' : ''} 
+						${i == arrayMonth.length - 1 ? 'rounded-bottom' : 'border-bottom'}`}>
 			<div class={`px-2 py-1 text-nowrap text-end`} style="min-width: 9em;">
 				<div class="d-flex flex-column">
 					<b>{i + 1} {monthToStringWithEnd}</b>
@@ -87,7 +89,7 @@
 							<input
 								class={`form-control bg-light bg-transparent border-0 rounded-0 ${getInputColors(item.date)}`}
 								bind:value={arrayMonth[i].fields[j].event}
-								placeholder="event" />
+								placeholder="праздник" />
 						</div>
 						<input
 							type="time"
@@ -99,7 +101,7 @@
 							class={`form-control bg-transparent border-0 rounded-0 ${getInputColors(item.date)}`}
 							style="width: 24em;"
 							bind:value={arrayMonth[i].fields[j].pray}
-							placeholder="pray" />
+							placeholder="богослужение" />
 					</div>
 				{/each}
 			</div>
