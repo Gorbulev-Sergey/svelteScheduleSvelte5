@@ -4,6 +4,7 @@
 	import { SubField } from '$lib/entityes/SubField';
 	import { db } from '$lib/scripts/firebase';
 	import { get, ref, set } from 'firebase/database';
+	import { onMount } from 'svelte';
 
 	let date = $state(new Date().toISOString().slice(0, 7));
 	let year = $derived(date.slice(0, 4));
@@ -27,9 +28,10 @@
 				Object.values(r.val()).forEach((v, i) => (arrayMonth[i] = v as IField));
 			}
 		});
+		console.log(daysInMonth);
 	});
 	function getInputColors(date: string) {
-		return new Date(date).getDay() == 6 ? 'text-primary' : 'text-dark';
+		return new Date(date).getDay() == 0 ? 'text-primary' : 'text-dark';
 	}
 </script>
 
@@ -57,7 +59,7 @@
 <div class="d-flex flex-column mt-3">
 	{#each arrayMonth as item, i}
 		<div
-			class={`d-flex ${new Date(item.date).getDay() == 6 ? 'bg-primary text-primary' : 'bg-light text-dark'} bg-opacity-10 border-bottom`}>
+			class={`d-flex ${new Date(item.date).getDay() == 0 ? 'bg-primary text-primary' : 'bg-light text-dark'} bg-opacity-10 border-bottom`}>
 			<div class={`px-2 py-1 text-nowrap text-end`} style="min-width: 9em;">
 				<div class="d-flex flex-column">
 					<b>{i + 1} {monthToStringWithEnd}</b>
@@ -93,8 +95,9 @@
 							style="width: 8em;"
 							bind:value={arrayMonth[i].fields[j].time} />
 						<input
+							multiple
 							class={`form-control bg-transparent border-0 rounded-0 ${getInputColors(item.date)}`}
-							style="width: 26em;"
+							style="width: 24em;"
 							bind:value={arrayMonth[i].fields[j].pray}
 							placeholder="pray" />
 					</div>
