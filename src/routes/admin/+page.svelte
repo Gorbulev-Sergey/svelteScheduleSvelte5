@@ -15,7 +15,6 @@
 	let year = $derived(date.slice(0, 4));
 	let month = $derived(date.slice(5, 7));
 	let daysInMonth = $derived(new Date(Number(year), Number(month), 0).getDate());
-
 	let monthToSring = $derived(new Date(date).toLocaleString('Ru-ru', { month: 'long' }));
 	let monthToStringWithEnd = $derived(
 		// Добавляем в конец названия месяца букву "я" или "а"
@@ -40,8 +39,7 @@
 			class="btn btn-dark text-light"
 			onclick={() => {
 				console.log($state.snapshot(arrayMonth));
-			}}>Сохранить</button
-		>
+			}}>Сохранить</button>
 	</div>
 </Title>
 
@@ -50,13 +48,9 @@
 		<div class="d-flex">
 			<div
 				class="bg-dark bg-opacity-10 text-dark px-2 py-1 text-nowrap text-end"
-				style="min-width: 15%;"
-			>
+				style="min-width: 15%;">
 				<div class="d-flex flex-column">
-					<b
-						>{i + 1}
-						{monthToStringWithEnd}</b
-					>
+					<b>{i + 1} {monthToStringWithEnd}</b>
 					<div>
 						{new Date(Number(year), Number(month) - 1, i + 1).toLocaleDateString('Ru-ru', {
 							weekday: 'long'
@@ -66,8 +60,7 @@
 			</div>
 			<input
 				class="form-control border-dark border-opacity-10 rounded-0"
-				bind:value={arrayMonth[i]}
-			/>
+				bind:value={arrayMonth[i]} />
 		</div>
 	{/each}
 </div>
