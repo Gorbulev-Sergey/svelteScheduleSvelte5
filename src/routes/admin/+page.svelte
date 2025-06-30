@@ -2,6 +2,8 @@
 	import Title from '$lib/components/Title.svelte';
 	import { type IField, Field } from '$lib/entityes/Field';
 	import { SubField } from '$lib/entityes/SubField';
+	import { db } from '$lib/scripts/firebase';
+	import { ref, set } from 'firebase/database';
 
 	let date = $state(new Date().toISOString().slice(0, 7));
 	let year = $derived(date.slice(0, 4));
@@ -32,7 +34,15 @@
 		<button
 			class="btn btn-dark text-light"
 			onclick={() => {
-				console.log($state.snapshot(arrayMonth));
+				let result = $state.snapshot(
+					arrayMonth.filter((f) =>
+						f.fields.find(
+							(sf) => sf.event.trim() != '' || sf.time != '00:00' || sf.pray.trim() != ''
+						)
+					)
+				);
+				console.log(result);
+				set(ref(db, `/schedule/${year}`), result);
 			}}>Сохранить</button>
 	</div>
 </Title>
@@ -60,10 +70,17 @@
 			<div class="flex-grow-1 d-flex flex-column">
 				{#each item.fields as field, j}
 					<div class="d-flex h-100">
-						<input
-							class="form-control border-dark border-opacity-10 rounded-0"
-							bind:value={arrayMonth[i].fields[j].event}
-							placeholder="event" />
+						<div class="d-flex w-75">
+							{#if item.fields.length > 1}
+								<button
+									class="btn btn-dark text-light rounded-0"
+									onclick={() => item.fields.splice(j, 1)}>-</button>
+							{/if}
+							<input
+								class="form-control border-dark border-opacity-10 rounded-0"
+								bind:value={arrayMonth[i].fields[j].event}
+								placeholder="event" />
+						</div>
 						<input
 							type="time"
 							class="form-control border-dark border-opacity-10 rounded-0 w-25"
