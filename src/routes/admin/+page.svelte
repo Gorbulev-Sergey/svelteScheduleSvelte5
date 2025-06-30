@@ -6,15 +6,17 @@
 	let month = $derived(date.slice(5, 7));
 	let monthToSring = $derived(new Date(date).toLocaleString('Ru-ru', { month: 'long' }));
 	let monthToStringWithEnd = $derived(
-		//
-		Number(month) == 2 || Number(month) == 8 ? monthToSring + 'а' : monthToSring.replace('ь', 'я')
+		// Добавляем в конец названия месяца букву "я" или "а"
+		Number(month) == 3 || Number(month) == 8
+			? monthToSring.replace('т', 'та')
+			: monthToSring.replace('ь', 'я')
 	);
+
+	let arrayMonth = $derived(Array<string>(daysInMonth(Number(year), Number(month))));
 
 	function daysInMonth(year: number, month: number) {
 		return new Date(Number(year), Number(month), 0).getDate();
 	}
-
-	let arrayMonth = $derived(Array<string>(daysInMonth(Number(year), Number(month))));
 </script>
 
 <Title title={`Редактировать расписание на <b>${monthToSring} ${year} года </b>`}>
@@ -27,19 +29,17 @@
 	</div>
 </Title>
 
-{monthToStringWithEnd}
-
 <div class="d-flex flex-column gap-1 mt-3">
 	{#each arrayMonth as item, i}
 		<div class="d-flex">
 			<div
-				class="bg-dark text-light px-3 py-2 rounded-start text-nowrap text-end"
+				class="bg-light text-dark px-3 py-2 rounded-start text-nowrap text-end"
 				style="min-width: 8%;"
 			>
 				{i + 1}
 				{monthToStringWithEnd}
 			</div>
-			<input class="form-control rounded-start-0" bind:value={arrayMonth[i]} />
+			<input class="form-control border-secondary rounded-start-0" bind:value={arrayMonth[i]} />
 		</div>
 	{/each}
 </div>
