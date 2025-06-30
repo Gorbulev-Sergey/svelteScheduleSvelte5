@@ -29,17 +29,29 @@
 	</div>
 </Title>
 
-<div class="d-flex flex-column gap-1 mt-3">
+<div class="d-flex flex-column mt-3">
 	{#each arrayMonth as item, i}
 		<div class="d-flex">
 			<div
-				class="bg-light text-dark px-3 py-2 rounded-start text-nowrap text-end"
-				style="min-width: 8%;"
+				class="bg-dark bg-opacity-10 text-dark px-2 py-1 text-nowrap text-end"
+				style="min-width: 15%;"
 			>
-				{i + 1}
-				{monthToStringWithEnd}
+				<div class="d-flex flex-column">
+					<b
+						>{i + 1}
+						{monthToStringWithEnd}</b
+					>
+					<div>
+						{new Date(Number(year), Number(month) - 1, i + 1).toLocaleDateString('Ru-ru', {
+							weekday: 'long'
+						})}
+					</div>
+				</div>
 			</div>
-			<input class="form-control border-secondary rounded-start-0" bind:value={arrayMonth[i]} />
+			<input
+				class="form-control border-dark border-opacity-10 rounded-0"
+				bind:value={arrayMonth[i]}
+			/>
 		</div>
 	{/each}
 </div>
