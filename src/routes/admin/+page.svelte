@@ -3,7 +3,8 @@
 	import { type IField, Field } from '$lib/entityes/Field';
 	import { SubField } from '$lib/entityes/SubField';
 	import { db } from '$lib/scripts/firebase';
-	import { ref, set } from 'firebase/database';
+	import { get, ref, set } from 'firebase/database';
+	import { onMount } from 'svelte';
 
 	let date = $state(new Date().toISOString().slice(0, 7));
 	let year = $derived(date.slice(0, 4));
@@ -22,6 +23,15 @@
 		arrayMonth = [...Array<IField>(daysInMonth)].map((v, i) =>
 			Field(`${year}-${month}-${i + 1 < 10 ? '0' : ''}${i + 1}`)
 		);
+	});
+
+	onMount(async () => {
+		get(ref(db, `/schedule/${year}/${Number(month)}`)).then((r) => {
+			if (r.exists()) {
+				arrayMonth = [...(Object.values(r.val()) as IField[]), ...arrayMonth];
+				//console.log(r.val());
+			}
+		});
 	});
 </script>
 
@@ -42,7 +52,7 @@
 					)
 				);
 				console.log(result);
-				set(ref(db, `/schedule/${year}`), result);
+				set(ref(db, `/schedule/${year}/${Number(month)}`), result);
 			}}>Сохранить</button>
 	</div>
 </Title>
