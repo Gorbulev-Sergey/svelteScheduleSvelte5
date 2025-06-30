@@ -2,13 +2,19 @@
 	import Title from '$lib/components/Title.svelte';
 
 	interface ISubField {
-		event?: string;
-		time?: string;
-		pray?: string;
+		event: string;
+		time: string;
+		pray: string;
+	}
+	function SubField(event: string = '', time: string = '', pray: string = '') {
+		return { event, time, pray };
 	}
 	interface IField {
 		date: string;
 		fields: ISubField[];
+	}
+	function Field(date: string = '', fields: ISubField[] = [SubField()]) {
+		return { date, fields };
 	}
 
 	let date = $state(new Date().toISOString().slice(0, 7));
@@ -23,9 +29,11 @@
 			: monthToSring.replace('ь', 'я')
 	);
 
-	let arrayMonth = $state(Array<string>(daysInMonth));
+	let arrayMonth = $state<IField[]>([]);
 	$effect(() => {
-		arrayMonth = Array<string>(daysInMonth);
+		arrayMonth = [...Array<IField>(daysInMonth)].map((v, i) =>
+			Field(`${year}-${month}-${i + 1 < 10 ? '0' : ''}${i + 1}`)
+		);
 	});
 </script>
 
@@ -58,9 +66,19 @@
 					</div>
 				</div>
 			</div>
-			<input
-				class="form-control border-dark border-opacity-10 rounded-0"
-				bind:value={arrayMonth[i]} />
+			<div class="flex-grow-1 d-flex">
+				{#each item.fields as field, j}
+					<input
+						class="form-control border-dark border-opacity-10 rounded-0"
+						bind:value={arrayMonth[i].fields[j].event} />
+					<input
+						class="form-control border-dark border-opacity-10 rounded-0"
+						bind:value={arrayMonth[i].fields[j].time} />
+					<input
+						class="form-control border-dark border-opacity-10 rounded-0"
+						bind:value={arrayMonth[i].fields[j].pray} />
+				{/each}
+			</div>
 		</div>
 	{/each}
 </div>
