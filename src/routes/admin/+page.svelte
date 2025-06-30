@@ -1,9 +1,21 @@
 <script lang="ts">
 	import Title from '$lib/components/Title.svelte';
 
+	interface ISubField {
+		event?: string;
+		time?: string;
+		pray?: string;
+	}
+	interface IField {
+		date: string;
+		fields: ISubField[];
+	}
+
 	let date = $state(new Date().toISOString().slice(0, 7));
 	let year = $derived(date.slice(0, 4));
 	let month = $derived(date.slice(5, 7));
+	let daysInMonth = $derived(new Date(Number(year), Number(month), 0).getDate());
+
 	let monthToSring = $derived(new Date(date).toLocaleString('Ru-ru', { month: 'long' }));
 	let monthToStringWithEnd = $derived(
 		// Добавляем в конец названия месяца букву "я" или "а"
@@ -12,11 +24,10 @@
 			: monthToSring.replace('ь', 'я')
 	);
 
-	let arrayMonth = $derived(Array<string>(daysInMonth(Number(year), Number(month))));
-
-	function daysInMonth(year: number, month: number) {
-		return new Date(Number(year), Number(month), 0).getDate();
-	}
+	let arrayMonth = $state(Array<string>(daysInMonth));
+	$effect(() => {
+		arrayMonth = Array<string>(daysInMonth);
+	});
 </script>
 
 <Title title={`Редактировать расписание на <b>${monthToSring} ${year} года </b>`}>
@@ -25,7 +36,12 @@
 			<div class="bg-light text-dark px-3 py-2 rounded-start text-nowrap">выбор даты:</div>
 			<input class="form-control rounded-start-0" type="month" bind:value={date} />
 		</div>
-		<button class="btn btn-dark text-light" onclick={() => {}}>Сохранить</button>
+		<button
+			class="btn btn-dark text-light"
+			onclick={() => {
+				console.log($state.snapshot(arrayMonth));
+			}}>Сохранить</button
+		>
 	</div>
 </Title>
 
