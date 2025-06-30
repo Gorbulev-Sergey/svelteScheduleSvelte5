@@ -8,7 +8,7 @@
 	let { title = '', children }: IProps = $props();
 </script>
 
-<div class="d-flex">
+<div class="d-flex align-items-center">
 	<h4 class="mb-0">{@html title}</h4>
 	{@render children?.()}
 </div>

@@ -24,21 +24,19 @@
 		);
 		get(ref(db, `/schedule/${year}/${Number(month)}`)).then((r) => {
 			if (r.exists()) {
-				arrayMonth = [...(Object.values(r.val()) as IField[]), ...arrayMonth];
-				//console.log(r.val());
+				Object.values(r.val()).forEach((v, i) => (arrayMonth[i] = v as IField));
 			}
 		});
-		console.log('привкет');
 	});
 	function getInputColors(date: string) {
 		return new Date(date).getDay() == 6 ? 'text-primary' : 'text-dark';
 	}
 </script>
 
-<Title title={`Редактировать расписание на <b>${monthToSring} ${year} года </b>`}>
-	<div class="flex-grow-1 d-flex justify-content-end gap-1">
+<Title title={`Редактировать расписание`}>
+	<div class="flex-grow-1 d-flex justify-content-between gap-1 ms-2">
 		<div class="d-flex align-items-center">
-			<div class="bg-light text-dark px-3 py-2 rounded-start text-nowrap">выбор даты:</div>
+			<div class="bg-light text-dark px-3 py-2 rounded-start text-nowrap">на дату:</div>
 			<input class="form-control rounded-start-0" type="month" bind:value={date} />
 		</div>
 		<button
