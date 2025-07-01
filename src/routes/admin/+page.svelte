@@ -54,7 +54,7 @@
 				for (let i = 0; i < daysInMonth; i++) {
 					arrayMonth[`${year}-${month}-${i + 1}`].forEach(() => {
 						result[`${year}-${month}-${i + 1}`] = arrayMonth[`${year}-${month}-${i + 1}`].filter(
-							(v) => v.event.trim() != '' || v.time != '00:00' || v.pray.trim() != ''
+							(v) => v.event.trim() != '' || v.pray.trim() != ''
 						);
 					});
 				}
