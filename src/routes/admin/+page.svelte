@@ -22,12 +22,6 @@
 		[] as unknown as { [date: string]: ISubField[] }
 	);
 
-	// onMount(async () => {
-	// 	for (let i = 0; i < daysInMonth; i++) {
-	// 		arrayMonth[`${year}-${month}-${i + 1}`] = [SubField()];
-	// 	}
-	// 	console.log(daysInMonth);
-	// });
 	$effect(() => {
 		let a: { [date: string]: ISubField[] } = {};
 		for (let i = 0; i < daysInMonth; i++) {
@@ -55,14 +49,16 @@
 		<button
 			class="btn btn-dark text-light"
 			onclick={() => {
-				// let result = $state.snapshot(
-				// 	arrayMonth.filter((f) =>
-				// 		f.fields.find(
-				// 			(sf) => sf.event.trim() != '' || sf.time != '00:00' || sf.pray.trim() != ''
-				// 		)
-				// 	)
-				// );
-				//set(ref(db, `/schedule/${year}/${Number(month)}`), result);
+				let result: { [date: string]: ISubField[] } = {};
+				for (let i = 0; i < daysInMonth; i++) {
+					arrayMonth[`${year}-${month}-${i + 1}`].forEach(() => {
+						result[`${year}-${month}-${i + 1}`] = arrayMonth[`${year}-${month}-${i + 1}`].filter(
+							(v) => v.event.trim() != '' || v.time != '00:00' || v.pray.trim() != ''
+						);
+					});
+				}
+
+				set(ref(db, `/schedule/${year}/${Number(month)}`), result);
 			}}>Сохранить</button>
 	</div>
 </Title>
