@@ -1,9 +1,10 @@
 <script lang="ts">
 	import Title from '$lib/components/Title.svelte';
 	import { type IField, Field } from '$lib/entityes/Field';
-	import { SubField } from '$lib/entityes/SubField';
+	import { SubField, type ISubField } from '$lib/entityes/SubField';
 	import { db } from '$lib/scripts/firebase';
-	import { get, ref, set } from 'firebase/database';
+	import { get, onValue, ref, set } from 'firebase/database';
+	import { onMount } from 'svelte';
 
 	let date = $state(new Date().toISOString().slice(0, 7));
 	let year = $derived(date.slice(0, 4));
@@ -17,16 +18,27 @@
 			: monthToSring.replace('ь', 'я')
 	);
 
-	let arrayMonth = $state<IField[]>([]);
+	let arrayMonth = $state<{ [date: string]: ISubField[] }>(
+		[] as unknown as { [date: string]: ISubField[] }
+	);
+
+	// onMount(async () => {
+	// 	for (let i = 0; i < daysInMonth; i++) {
+	// 		arrayMonth[`${year}-${month}-${i + 1}`] = [SubField()];
+	// 	}
+	// 	console.log(daysInMonth);
+	// });
 	$effect(() => {
-		arrayMonth = [...Array<IField>(daysInMonth)].map((v, i) =>
-			Field(`${year}-${month}-${i + 1 < 10 ? '0' : ''}${i + 1}`)
-		);
-		get(ref(db, `/schedule/${year}/${Number(month)}`)).then((r) => {
-			if (r.exists()) {
-				Object.values(r.val()).forEach((v, i) => (arrayMonth[i] = v as IField));
-			}
-		});
+		let a: { [date: string]: ISubField[] } = {};
+		for (let i = 0; i < daysInMonth; i++) {
+			a[`${year}-${month}-${i + 1}`] = [SubField()];
+		}
+		arrayMonth = a;
+		// get(ref(db, `/schedule/${year}/${Number(month)}`)).then((r) => {
+		// 	if (r.exists()) {
+		// 		Object.values(r.val()).forEach((v, i) => (arrayMonth[i] = v as IField));
+		// 	}
+		// });
 		console.log(daysInMonth);
 	});
 	function getInputColors(date: string) {
@@ -43,25 +55,24 @@
 		<button
 			class="btn btn-dark text-light"
 			onclick={() => {
-				let result = $state.snapshot(
-					arrayMonth.filter((f) =>
-						f.fields.find(
-							(sf) => sf.event.trim() != '' || sf.time != '00:00' || sf.pray.trim() != ''
-						)
-					)
-				);
-				set(ref(db, `/schedule/${year}/${Number(month)}`), result);
+				// let result = $state.snapshot(
+				// 	arrayMonth.filter((f) =>
+				// 		f.fields.find(
+				// 			(sf) => sf.event.trim() != '' || sf.time != '00:00' || sf.pray.trim() != ''
+				// 		)
+				// 	)
+				// );
+				//set(ref(db, `/schedule/${year}/${Number(month)}`), result);
 			}}>Сохранить</button>
 	</div>
 </Title>
 
 <div class="d-flex flex-column mt-3">
-	{#each arrayMonth as item, i}
+	{#each Object.entries(arrayMonth) as [date, item], i}
 		<div
 			class={`d-flex 
-						${new Date(item.date).getDay() == 0 ? 'bg-primary text-primary' : 'bg-light text-dark'} bg-opacity-10  
-						${i == 0 ? 'rounded-top' : ''} 
-						${i == arrayMonth.length - 1 ? 'rounded-bottom' : 'border-bottom'}`}>
+						${new Date(date).getDay() == 0 ? 'bg-primary text-primary' : 'bg-light text-dark'} bg-opacity-10  
+						${i == 0 ? 'rounded-top' : ''}`}>
 			<div class={`px-2 py-1 text-nowrap text-end`} style="min-width: 9em;">
 				<div class="d-flex flex-column">
 					<b>{i + 1} {monthToStringWithEnd}</b>
@@ -75,32 +86,31 @@
 			<button
 				class="btn btn-dark text-light rounded-0"
 				onclick={() => {
-					item.fields.push(SubField());
+					item.push(SubField());
 				}}>+</button>
 			<div class="flex-grow-1 d-flex flex-column">
-				{#each item.fields as field, j}
+				{#each item as field, j}
 					<div class="d-flex h-100">
 						<div class="d-flex w-75">
-							{#if item.fields.length > 1}
-								<button
-									class="btn btn-dark text-light rounded-0"
-									onclick={() => item.fields.splice(j, 1)}>-</button>
+							{#if item.length > 1}
+								<button class="btn btn-dark text-light rounded-0" onclick={() => item.splice(j, 1)}
+									>-</button>
 							{/if}
 							<input
 								class={`form-control bg-light bg-transparent border-0 rounded-0 ${getInputColors(item.date)}`}
-								bind:value={arrayMonth[i].fields[j].event}
+								bind:value={arrayMonth[date][j].event}
 								placeholder="праздник" />
 						</div>
 						<input
 							type="time"
 							class={`form-control bg-transparent border-0 rounded-0 ${getInputColors(item.date)}`}
 							style="width: 8em;"
-							bind:value={arrayMonth[i].fields[j].time} />
+							bind:value={arrayMonth[date][j].time} />
 						<input
 							multiple
 							class={`form-control bg-transparent border-0 rounded-0 ${getInputColors(item.date)}`}
 							style="width: 24em;"
-							bind:value={arrayMonth[i].fields[j].pray}
+							bind:value={arrayMonth[date][j].pray}
 							placeholder="богослужение" />
 					</div>
 				{/each}
