@@ -1,10 +1,8 @@
 <script lang="ts">
 	import Title from '$lib/components/Title.svelte';
-	import { type IField, Field } from '$lib/entityes/Field';
 	import { SubField, type ISubField } from '$lib/entityes/SubField';
 	import { db } from '$lib/scripts/firebase';
-	import { get, onValue, ref, set } from 'firebase/database';
-	import { onMount } from 'svelte';
+	import { get, ref, set } from 'firebase/database';
 
 	let date = $state(new Date().toISOString().slice(0, 7));
 	let year = $derived(date.slice(0, 4));
@@ -30,7 +28,10 @@
 		arrayMonth = a;
 		get(ref(db, `/schedule/${year}/${Number(month)}`)).then((r) => {
 			if (r.exists()) {
-				arrayMonth = { ...a, ...r.val() };
+				let result = r.val() as { [date: string]: ISubField[] };
+				Object.keys(result).forEach((k) => {
+					arrayMonth[k] = result[k];
+				});
 			}
 		});
 		console.log(daysInMonth);
