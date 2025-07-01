@@ -28,11 +28,11 @@
 			a[`${year}-${month}-${i + 1}`] = [SubField()];
 		}
 		arrayMonth = a;
-		// get(ref(db, `/schedule/${year}/${Number(month)}`)).then((r) => {
-		// 	if (r.exists()) {
-		// 		Object.values(r.val()).forEach((v, i) => (arrayMonth[i] = v as IField));
-		// 	}
-		// });
+		get(ref(db, `/schedule/${year}/${Number(month)}`)).then((r) => {
+			if (r.exists()) {
+				arrayMonth = { ...a, ...r.val() };
+			}
+		});
 		console.log(daysInMonth);
 	});
 	function getInputColors(date: string) {
@@ -93,18 +93,18 @@
 									>-</button>
 							{/if}
 							<input
-								class={`form-control bg-light bg-transparent border-0 rounded-0 ${getInputColors(item.date)}`}
+								class={`form-control bg-light bg-transparent border-0 rounded-0 ${getInputColors(date)}`}
 								bind:value={arrayMonth[date][j].event}
 								placeholder="праздник" />
 						</div>
 						<input
 							type="time"
-							class={`form-control bg-transparent border-0 rounded-0 ${getInputColors(item.date)}`}
+							class={`form-control bg-transparent border-0 rounded-0 ${getInputColors(date)}`}
 							style="width: 8em;"
 							bind:value={arrayMonth[date][j].time} />
 						<input
 							multiple
-							class={`form-control bg-transparent border-0 rounded-0 ${getInputColors(item.date)}`}
+							class={`form-control bg-transparent border-0 rounded-0 ${getInputColors(date)}`}
 							style="width: 24em;"
 							bind:value={arrayMonth[date][j].pray}
 							placeholder="богослужение" />
