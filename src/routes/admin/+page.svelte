@@ -23,7 +23,7 @@
 	$effect(() => {
 		let a: { [date: string]: ISubField[] } = {};
 		for (let i = 0; i < daysInMonth; i++) {
-			a[`${year}-${month}-${i + 1}`] = [SubField()];
+			a[`${year}-${month}-${i < 9 ? '0' : ''}${i + 1}`] = [SubField()];
 		}
 		arrayMonth = a;
 		get(ref(db, `/schedule/${year}/${Number(month)}`)).then((r) => {
