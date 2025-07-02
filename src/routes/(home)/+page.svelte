@@ -69,7 +69,7 @@
 	{#each Object.entries(dataMonth) as [date, item], i}
 		<div
 			class={`${new Date(date).getDay() == 0 ? 'bg-primary text-primary bg-opacity-10' : 'bg-light text-dark'} 
-					${i == daysInDataMonth - 1 ? 'rounded-bottom' : ''}`}
+					${i == daysInDataMonth - 1 ? 'rounded-bottom pb-1' : ''}`}
 			style="display: grid; grid-template-columns: .15fr 1fr;">
 			<div
 				class="d-flex flex-column justify-content-start align-items-end py-1 ps-3 pe-2"
@@ -98,7 +98,7 @@
 			</div>
 		</div>
 		{#if i != daysInDataMonth - 1}
-			<hr class="m-0 p-0 border-secondary border-opacity-75" />
+			<hr class="my-0 mx-4 p-0 border-secondary border-opacity-50" />
 		{/if}
 	{/each}
 </div>
