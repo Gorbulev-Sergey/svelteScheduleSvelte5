@@ -64,7 +64,7 @@
 	</div>
 </Title>
 
-<div class="d-flex flex-column mt-3">
+<div class="d-flex flex-column mt-3 rounded border">
 	{#each Object.entries(arrayMonth) as [date, item], i}
 		<div
 			class={`d-flex 
@@ -100,7 +100,7 @@
 						</div>
 						<input
 							type="time"
-							class={`form-control bg-transparent border-0 rounded-0 ${getInputColors(date)}`}
+							class={`form-control bg-transparent border-0 rounded-0 ${getInputColors(date)} ${field.time != '00:00' ? 'fw-bold' : 'text-opacity-25'}`}
 							style="width: 8em;"
 							bind:value={arrayMonth[date][j].time} />
 						<input
