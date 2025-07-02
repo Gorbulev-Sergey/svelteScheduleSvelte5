@@ -50,38 +50,31 @@
 </Title>
 
 <div class="d-flex flex-column mt-3 rounded">
-	<div>
-		<div class="py-2 ps-4 print-title d-none">
-			<b>Расписание на {monthToSring.toUpperCase()} {year} года</b>
+	<div class="no-print" style="display: grid; grid-template-columns: .15fr 1fr; min-height: 2.1em">
+		<div class="text-end py-2 ps-3 pe-2" style="min-width: 8.2em;">
+			<span class="badge bg-dark text-light">Дата</span>
 		</div>
-		<div
-			class="no-print"
-			style="display: grid; grid-template-columns: .15fr 1fr; min-height: 2.1em">
-			<div class="text-end px-3" style="min-width: 8.2em;">
-				<span class="badge bg-dark text-light">Дата</span>
+		<div style="display: grid; grid-template-columns: 1fr .1fr .6fr">
+			<div class="py-2 ps-3 pe-2" style="min-width: 13em;">
+				<span class="badge bg-dark text-light">Праздник</span>
 			</div>
-			<div style="display: grid; grid-template-columns: 1fr .1fr .4fr">
-				<div class="text-start ps-2" style="min-width: 13em;">
-					<span class="badge bg-dark text-light">Праздник</span>
-				</div>
-				<div class="text-end" style="min-width: 5em;">
-					<span class="badge bg-dark text-light">Время</span>
-				</div>
-				<div class="text-start ps-4" style="min-width: 8em;">
-					<span class="badge bg-dark text-light">Богослужение</span>
-				</div>
+			<div class="py-2 text-end" style="min-width: 5em;">
+				<span class="badge bg-dark text-light">Время</span>
+			</div>
+			<div class="py-2 ps-4 ps-2 pe-" style="min-width: 8em;">
+				<span class="badge bg-dark text-light">Богослужение</span>
 			</div>
 		</div>
 	</div>
 	{#each Object.entries(dataMonth) as [date, item], i}
 		<div
-			class={`d-flex
-						${new Date(date).getDay() == 0 ? 'bg-primary text-primary bg-opacity-10' : 'bg-light text-dark'}  
-						${i == 0 ? 'rounded-top' : ''} 
-						${i == daysInDataMonth - 1 ? 'rounded-bottom' : ''}`}>
+			class={`${new Date(date).getDay() == 0 ? 'bg-primary text-primary bg-opacity-10' : 'bg-light text-dark'}  
+					${i == 0 ? 'rounded-top' : ''} 
+					${i == daysInDataMonth - 1 ? 'rounded-bottom' : ''}`}
+			style="display: grid; grid-template-columns: .15fr 1fr; min-height: 2.1em">
 			<div
-				class="d-flex flex-column justify-content-start align-items-end ps-4 pe-2 py-2"
-				style="min-width: 10em;">
+				class="d-flex flex-column justify-content-start align-items-end py-2 ps-3 pe-2"
+				style="min-width: 8.2em;">
 				<b>{Number(date.slice(8, 10))} {monthToStringWithEnd}</b>
 				<i>
 					{new Date(date).toLocaleDateString('Ru-ru', {
@@ -89,24 +82,16 @@
 					})}
 				</i>
 			</div>
-			<div class="flex-grow-1 d-flex flex-column text-wrap">
+			<div style="display: grid; grid-template-columns: 1fr .1fr .6fr">
 				{#each item as field, j}
-					<div class="d-flex align-items-start">
-						<div
-							class={`w-100 bg-light bg-transparent border-0 rounded-0 px-3 py-2 ${getInputColors(date)}`}
-							style="width: 50em;">
-							{@html dataMonth[date][j].event}
-						</div>
-						<div
-							class={`d-flex justify-content-center align-items-end bg-transparent border-0 rounded-0 py-2 ${getInputColors(date)} fw-bold`}
-							style="width: 4em;">
-							{@html dataMonth[date][j].time}
-						</div>
-						<div
-							class={`bg-transparent border-0 rounded-0 px-3 py-2 ${getInputColors(date)}`}
-							style="width: 24em;">
-							{@html dataMonth[date][j].pray}
-						</div>
+					<div class={`py-2 ps-3 pe-2 ${getInputColors(date)}`} style="min-width: 13em;">
+						{@html dataMonth[date][j].event}
+					</div>
+					<div class={`py-2 text-end ${getInputColors(date)} fw-bold`} style="min-width: 5em;">
+						{@html dataMonth[date][j].time}
+					</div>
+					<div class={`py-2 ps-4 ps-2 pe-3 ${getInputColors(date)}`} style="min-width: 8em;">
+						{@html dataMonth[date][j].pray}
 					</div>
 				{/each}
 			</div>
