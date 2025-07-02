@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Title from '$lib/components/Title.svelte';
-	import { SubField, type ISubField } from '$lib/entityes/SubField';
+	import { Field, type IField } from '$lib/entityes/Field';
 	import { db } from '$lib/scripts/firebase';
 	import { get, ref, set } from 'firebase/database';
 
@@ -16,19 +16,19 @@
 			: monthToSring.replace('ь', 'я')
 	);
 
-	let arrayMonth = $state<{ [date: string]: ISubField[] }>(
-		[] as unknown as { [date: string]: ISubField[] }
+	let arrayMonth = $state<{ [date: string]: IField[] }>(
+		[] as unknown as { [date: string]: IField[] }
 	);
 
 	$effect(() => {
-		let a: { [date: string]: ISubField[] } = {};
+		let a: { [date: string]: IField[] } = {};
 		for (let i = 0; i < daysInMonth; i++) {
-			a[`${year}-${month}-${i < 9 ? '0' : ''}${i + 1}`] = [SubField()];
+			a[`${year}-${month}-${i < 9 ? '0' : ''}${i + 1}`] = [Field()];
 		}
 		arrayMonth = a;
 		get(ref(db, `/schedule/${year}/${Number(month)}`)).then((r) => {
 			if (r.exists()) {
-				let result = r.val() as { [date: string]: ISubField[] };
+				let result = r.val() as { [date: string]: IField[] };
 				Object.keys(result).forEach((k) => {
 					arrayMonth[k] = result[k];
 				});
@@ -50,7 +50,7 @@
 		<button
 			class="btn btn-dark text-light"
 			onclick={() => {
-				let result: { [date: string]: ISubField[] } = {};
+				let result: { [date: string]: IField[] } = {};
 				for (let i = 0; i < daysInMonth; i++) {
 					arrayMonth[`${year}-${month}-${i < 9 ? '0' : ''}${i + 1}`].forEach(() => {
 						result[`${year}-${month}-${i < 9 ? '0' : ''}${i + 1}`] = arrayMonth[
@@ -83,7 +83,7 @@
 			<button
 				class="btn btn-dark text-light rounded-0"
 				onclick={() => {
-					item.push(SubField());
+					item.push(Field());
 				}}>+</button>
 			<div class="flex-grow-1 d-flex flex-column">
 				{#each item as field, j}

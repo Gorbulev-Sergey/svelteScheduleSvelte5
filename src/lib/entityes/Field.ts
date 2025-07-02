@@ -1,9 +1,8 @@
-import { SubField, type ISubField } from './SubField';
-
 export interface IField {
-	date: string;
-	fields: ISubField[];
+	event: string;
+	time: string;
+	pray: string;
 }
-export function Field(date: string = '', fields: ISubField[] = [SubField()]) {
-	return { date, fields };
+export function Field(event: string = '', time: string = '00:00', pray: string = '') {
+	return { event, time, pray };
 }
