@@ -50,7 +50,7 @@
 </Title>
 
 <div class="d-flex flex-column mt-3 rounded bg-light">
-	<div class="no-print" style="display: grid; grid-template-columns: .15fr 1fr; min-height: 2.1em">
+	<div class="no-print" style="display: grid; grid-template-columns: .15fr 1fr;">
 		<div class="text-end py-2 ps-3 pe-2" style="min-width: 8.2em;">
 			<span class="badge bg-dark text-light">Дата</span>
 		</div>
@@ -68,12 +68,11 @@
 	</div>
 	{#each Object.entries(dataMonth) as [date, item], i}
 		<div
-			class={`${new Date(date).getDay() == 0 ? 'bg-primary text-primary bg-opacity-10' : 'bg-light text-dark'}  
-					${i == 0 ? 'rounded-top' : ''} 
+			class={`${new Date(date).getDay() == 0 ? 'bg-primary text-primary bg-opacity-10' : 'bg-light text-dark'} 
 					${i == daysInDataMonth - 1 ? 'rounded-bottom' : ''}`}
-			style="display: grid; grid-template-columns: .15fr 1fr; min-height: 2.1em">
+			style="display: grid; grid-template-columns: .15fr 1fr;">
 			<div
-				class="d-flex flex-column justify-content-start align-items-end py-2 ps-3 pe-2"
+				class="d-flex flex-column justify-content-start align-items-end py-1 ps-3 pe-2"
 				style="min-width: 8em;">
 				<b>{Number(date.slice(8, 10))} {monthToStringWithEnd}</b>
 				<i>
@@ -84,19 +83,22 @@
 			</div>
 			<div style="display: grid; grid-template-columns: 1fr .1fr .6fr">
 				{#each item as field, j}
-					<div class={`py-2 ps-3 pe-2 ${getInputColors(date)}`} style="min-width: 13em;">
+					<div class={`py-1 ps-3 pe-2 ${getInputColors(date)}`} style="min-width: 13em;">
 						{@html dataMonth[date][j].event}
 					</div>
-					<div class={`py-2 text-end ${getInputColors(date)} fw-bold`} style="min-width: 5em;">
+					<div class={`py-1 text-end ${getInputColors(date)} fw-bold`} style="min-width: 5em;">
 						{@html dataMonth[date][j].time}
 					</div>
 					<div
-						class={`text-wrap py-2 ps-4 ps-2 pe-3 ${getInputColors(date)}`}
+						class={`text-wrap py-1 ps-4 ps-2 pe-3 ${getInputColors(date)}`}
 						style="min-width: 10em;">
 						{@html dataMonth[date][j].pray}
 					</div>
 				{/each}
 			</div>
 		</div>
+		{#if i != daysInDataMonth - 1}
+			<hr class="m-0 p-0 border-secondary border-opacity-75" />
+		{/if}
 	{/each}
 </div>
