@@ -25,6 +25,7 @@
 	let daysInDataMonth = $derived(Object.keys(dataMonth).length);
 
 	$effect(() => {
+		dataMonth = {};
 		get(ref(db, `/schedule/${year}/${Number(month)}`)).then((r) => {
 			if (r.exists()) {
 				dataMonth = r.val();
@@ -57,9 +58,9 @@
 						${i == daysInDataMonth - 1 ? 'rounded-bottom' : ''}`}>
 			<div class={`px-2 py-1 text-nowrap text-end`} style="min-width: 9em;">
 				<div class="d-flex justify-content-center align-items-center flex-column">
-					<b>{i + 1} {monthToStringWithEnd}</b>
+					<b>{Number(date.slice(8, 10))} {monthToStringWithEnd}</b>
 					<div>
-						{new Date(Number(year), Number(month) - 1, i + 1).toLocaleDateString('Ru-ru', {
+						{new Date(date).toLocaleDateString('Ru-ru', {
 							weekday: 'long'
 						})}
 					</div>
