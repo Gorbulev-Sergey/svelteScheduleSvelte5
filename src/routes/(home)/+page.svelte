@@ -49,7 +49,7 @@
 	</div>
 </Title>
 
-<div class="d-flex flex-column mt-3 rounded">
+<div class="d-flex flex-column mt-3 rounded bg-light">
 	<div class="no-print" style="display: grid; grid-template-columns: .15fr 1fr; min-height: 2.1em">
 		<div class="text-end py-2 ps-3 pe-2" style="min-width: 8.2em;">
 			<span class="badge bg-dark text-light">Дата</span>
@@ -61,7 +61,7 @@
 			<div class="py-2 text-end" style="min-width: 5em;">
 				<span class="badge bg-dark text-light">Время</span>
 			</div>
-			<div class="py-2 ps-4 ps-2 pe-" style="min-width: 8em;">
+			<div class="py-2 ps-4 ps-2 pe-3" style="min-width: 10em;">
 				<span class="badge bg-dark text-light">Богослужение</span>
 			</div>
 		</div>
@@ -74,7 +74,7 @@
 			style="display: grid; grid-template-columns: .15fr 1fr; min-height: 2.1em">
 			<div
 				class="d-flex flex-column justify-content-start align-items-end py-2 ps-3 pe-2"
-				style="min-width: 8.2em;">
+				style="min-width: 8em;">
 				<b>{Number(date.slice(8, 10))} {monthToStringWithEnd}</b>
 				<i>
 					{new Date(date).toLocaleDateString('Ru-ru', {
@@ -90,7 +90,9 @@
 					<div class={`py-2 text-end ${getInputColors(date)} fw-bold`} style="min-width: 5em;">
 						{@html dataMonth[date][j].time}
 					</div>
-					<div class={`py-2 ps-4 ps-2 pe-3 ${getInputColors(date)}`} style="min-width: 8em;">
+					<div
+						class={`text-wrap py-2 ps-4 ps-2 pe-3 ${getInputColors(date)}`}
+						style="min-width: 10em;">
 						{@html dataMonth[date][j].pray}
 					</div>
 				{/each}
