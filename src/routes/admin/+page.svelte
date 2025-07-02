@@ -41,7 +41,7 @@
 	}
 </script>
 
-<Title title={`Редактировать расписание`}>
+<Title title="Редактировать расписание">
 	<div class="flex-grow-1 d-flex justify-content-between gap-1 ms-2">
 		<div class="d-flex align-items-center">
 			<div class="bg-light text-dark px-3 py-2 rounded-start text-nowrap">на дату:</div>
@@ -64,12 +64,13 @@
 	</div>
 </Title>
 
-<div class="d-flex flex-column mt-3 rounded border">
+<div class="d-flex flex-column mt-3 rounded">
 	{#each Object.entries(arrayMonth) as [date, item], i}
 		<div
 			class={`d-flex 
-						${new Date(date).getDay() == 0 ? 'bg-primary text-primary' : 'bg-light text-dark'} bg-opacity-10  
-						${i == 0 ? 'rounded-top' : ''}`}>
+						${new Date(date).getDay() == 0 ? 'bg-primary text-primary bg-opacity-10' : 'bg-light text-dark'}  
+						${i == 0 ? 'rounded-top' : ''} 
+						${i == daysInMonth - 1 ? 'rounded-bottom' : ''}`}>
 			<div class={`px-2 py-1 text-nowrap text-end`} style="min-width: 9em;">
 				<div class="d-flex flex-column">
 					<b>{i + 1} {monthToStringWithEnd}</b>
@@ -81,7 +82,7 @@
 				</div>
 			</div>
 			<button
-				class="btn btn-dark text-light rounded-0"
+				class={`btn btn-light ${new Date(date).getDay() == 0 ? 'bg-primary text-primary' : ' bg-dark text-dark'} bg-opacity-25 fw-bold rounded-1`}
 				onclick={() => {
 					item.push(Field());
 				}}>+</button>
@@ -90,8 +91,9 @@
 					<div class="d-flex h-100">
 						<div class="d-flex w-75">
 							{#if item.length > 1}
-								<button class="btn btn-dark text-light rounded-0" onclick={() => item.splice(j, 1)}
-									>-</button>
+								<button
+									class={`btn btn-light ${new Date(date).getDay() == 0 ? 'bg-primary text-primary' : ' bg-dark text-dark'} bg-opacity-25 fw-bold rounded-1`}
+									onclick={() => item.splice(j, 1)}>-</button>
 							{/if}
 							<input
 								class={`form-control bg-light bg-transparent border-0 rounded-0 ${getInputColors(date)}`}
