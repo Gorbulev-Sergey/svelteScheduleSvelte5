@@ -52,10 +52,10 @@
 			onclick={() => {
 				let result: { [date: string]: ISubField[] } = {};
 				for (let i = 0; i < daysInMonth; i++) {
-					arrayMonth[`${year}-${month}-${i + 1}`].forEach(() => {
-						result[`${year}-${month}-${i + 1}`] = arrayMonth[`${year}-${month}-${i + 1}`].filter(
-							(v) => v.event.trim() != '' || v.pray.trim() != ''
-						);
+					arrayMonth[`${year}-${month}-${i < 9 ? '0' : ''}${i + 1}`].forEach(() => {
+						result[`${year}-${month}-${i < 9 ? '0' : ''}${i + 1}`] = arrayMonth[
+							`${year}-${month}-${i < 9 ? '0' : ''}${i + 1}`
+						].filter((v) => v.event.trim() != '' || v.pray.trim() != '');
 					});
 				}
 
@@ -96,7 +96,7 @@
 							<input
 								class={`form-control bg-light bg-transparent border-0 rounded-0 ${getInputColors(date)}`}
 								bind:value={arrayMonth[date][j].event}
-								placeholder="праздник" />
+								placeholder="" />
 						</div>
 						<input
 							type="time"
@@ -108,7 +108,7 @@
 							class={`form-control bg-transparent border-0 rounded-0 ${getInputColors(date)}`}
 							style="width: 24em;"
 							bind:value={arrayMonth[date][j].pray}
-							placeholder="богослужение" />
+							placeholder="" />
 					</div>
 				{/each}
 			</div>
