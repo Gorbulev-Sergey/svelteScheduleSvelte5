@@ -50,22 +50,24 @@
 </Title>
 
 <div class="d-flex flex-column mt-3 rounded bg-light">
-	<div class="no-print" style="display: grid; grid-template-columns: .15fr 1fr;">
-		<div class="text-end py-2 ps-3 pe-2" style="min-width: 8.2em;">
-			<span class="badge bg-dark text-light">Дата</span>
+	{#if daysInDataMonth > 0}
+		<div class="no-print" style="display: grid; grid-template-columns: .15fr 1fr;">
+			<div class="text-end py-2 ps-3 pe-2" style="min-width: 8.2em;">
+				<span class="badge bg-dark text-light">Дата</span>
+			</div>
+			<div style="display: grid; grid-template-columns: 1fr .1fr .6fr">
+				<div class="py-2 ps-3 pe-2" style="min-width: 13em;">
+					<span class="badge bg-dark text-light">Праздник</span>
+				</div>
+				<div class="py-2 text-end" style="min-width: 5em;">
+					<span class="badge bg-dark text-light">Время</span>
+				</div>
+				<div class="py-2 ps-4 ps-2 pe-3" style="min-width: 10em;">
+					<span class="badge bg-dark text-light">Богослужение</span>
+				</div>
+			</div>
 		</div>
-		<div style="display: grid; grid-template-columns: 1fr .1fr .6fr">
-			<div class="py-2 ps-3 pe-2" style="min-width: 13em;">
-				<span class="badge bg-dark text-light">Праздник</span>
-			</div>
-			<div class="py-2 text-end" style="min-width: 5em;">
-				<span class="badge bg-dark text-light">Время</span>
-			</div>
-			<div class="py-2 ps-4 ps-2 pe-3" style="min-width: 10em;">
-				<span class="badge bg-dark text-light">Богослужение</span>
-			</div>
-		</div>
-	</div>
+	{/if}
 	{#each Object.entries(dataMonth) as [date, item], i}
 		<div
 			class={`${new Date(date).getDay() == 0 ? 'bg-primary text-primary bg-opacity-10' : 'bg-light text-dark'} 
