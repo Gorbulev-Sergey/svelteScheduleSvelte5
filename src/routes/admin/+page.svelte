@@ -124,19 +124,21 @@
 							<input
 								class={`form-control bg-light bg-transparent border-0 rounded-0 ${getInputColors(date)} my-1 ms-1 px-2`}
 								bind:value={dataMonth[date][j].event}
-								placeholder="" />
+								placeholder=""
+								title="Праздник" />
 						</div>
 						<input
 							type="time"
 							class={`form-control bg-transparent border-0 rounded-0 ${getInputColors(date)} ${field.time != '00:00' ? 'fw-bold' : 'text-opacity-25'} my-1 px-2`}
 							style="width: 8em;"
-							bind:value={dataMonth[date][j].time} />
+							bind:value={dataMonth[date][j].time}
+							title="Время" />
 						<input
 							multiple
 							class={`form-control bg-transparent border-0 rounded-0 ${getInputColors(date)} my-1 me-1 px-2`}
 							style="width: 24em;"
 							bind:value={dataMonth[date][j].pray}
-							placeholder="" />
+							title="Богослужение" />
 					</div>
 				{/each}
 			</div>
