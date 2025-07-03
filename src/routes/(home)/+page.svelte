@@ -41,7 +41,7 @@
 </script>
 
 <Title title="Расписание">
-	<div class="flex-grow-1 d-flex justify-content-between gap-1 ms-2">
+	<div class="flex-grow-1 d-flex justify-content-between gap-1 ms-3">
 		<div class="d-flex align-items-center">
 			<div class="bg-light text-dark px-3 py-2 rounded-start border border-light text-nowrap">
 				на дату:
