@@ -4,10 +4,14 @@
 	import { db } from '$lib/scripts/firebase';
 	import { equalTo, get, orderByChild, orderByKey, query, ref } from 'firebase/database';
 
+	let week = $state(1);
 	let year = $state(2025);
 	let month = $state(1);
 	let daysInMonth = $derived(new Date(Number(year), Number(month), 0).getDate());
-	let week = $state(10);
+	// Объект для хранения расписания за выбранную неделю
+	let dataSchedule = $state<{ [date: string]: IField[] }>(
+		[] as unknown as { [date: string]: IField[] }
+	);
 
 	function getWeek(date: Date) {
 		let week1 = new Date(date.getFullYear(), 0, 1);
@@ -66,8 +70,6 @@
 	<button
 		class="btn btn-dark text-light"
 		onclick={async () => {
-			//console.log(d.slice(0, 4), '*', d.slice(5, 7), '*', d.slice(8, 10));
-			console.log(getDatesByWeek(year, week));
-			console.log(await getScheduleByWeek(getDatesByWeek(year, week)));
+			dataSchedule = await getScheduleByWeek(getDatesByWeek(year, week));
 		}}>Выбрать</button>
 </div>
