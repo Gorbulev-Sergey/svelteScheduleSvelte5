@@ -2,9 +2,10 @@
 	import Title from '$lib/components/Title.svelte';
 	import type { IField } from '$lib/entityes/Field';
 	import { db } from '$lib/scripts/firebase';
-	import { equalTo, get, orderByChild, orderByKey, query, ref } from 'firebase/database';
+	import { get, ref } from 'firebase/database';
+	import { onMount } from 'svelte';
 
-	let week = $state(getWeek(new Date()));
+	let week = $state(27);
 	let year = $state(2025);
 	let month = $state(1);
 	let daysInMonth = $derived(new Date(Number(year), Number(month), 0).getDate());
@@ -68,6 +69,10 @@
 	function getInputColors(date: string) {
 		return new Date(date).getDay() == 0 ? 'text-primary' : 'text-dark';
 	}
+
+	onMount(async () => {
+		getScheduleByWeek(getDatesByWeek(year, week), dataSchedule);
+	});
 </script>
 
 <Title title="Выборка по неделям" />
@@ -80,13 +85,14 @@
 	{/each}
 </div> -->
 
-<div class="d-flex gap-2 mt-3">
+<div class="d-flex flex-column gap-2 mt-3">
+	<div>Список недель через запятую: (текущая неделя {getWeek(new Date())})</div>
 	<input
 		class="form-control"
 		type="number"
 		bind:value={week}
 		placeholder="номер недели"
-		onchange={async () => {
+		onchange={() => {
 			dataSchedule = {};
 			getScheduleByWeek(getDatesByWeek(year, week), dataSchedule);
 		}} />
