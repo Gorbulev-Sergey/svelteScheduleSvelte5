@@ -114,20 +114,6 @@
 			bind:min={weekPicker.low}
 			bind:max={weekPicker.max}
 			bind:value={weekPicker.up} />
-		<!-- <div class="bg-light text-dark p-2 rounded-start">от:</div>
-		<input
-			class="form-control border-0 rounded-0 m-1 w-auto"
-			type="number"
-			min={weekPicker.min}
-			max={weekPicker.up}
-			bind:value={weekPicker.low} />
-		<div class="bg-light text-dark p-2">до:</div>
-		<input
-			class="form-control border-0 rounded-0 m-1 w-auto"
-			type="number"
-			min={weekPicker.low}
-			max={weekPicker.max}
-			bind:value={weekPicker.up} /> -->
 		<button
 			class="btn btn-light text-dark"
 			onclick={async () => {

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import MonthPicker from '$lib/components/MonthPicker.svelte';
 	import Title from '$lib/components/Title.svelte';
 	import { type IField } from '$lib/entityes/Field';
 	import { db } from '$lib/scripts/firebase';
@@ -42,30 +43,7 @@
 
 <Title title="Расписание">
 	<div class="flex-grow-1 d-flex justify-content-between gap-1 ms-3">
-		<div class="d-flex align-items-center">
-			<div class="bg-light text-dark px-3 py-2 rounded-start border border-light text-nowrap">
-				на дату:
-			</div>
-			<div class="d-flex align-items-center border rounded-end">
-				<button
-					title="предыдущий месяц"
-					class="btn btn-light text-dark border-0 rounded-0 p-2"
-					onclick={() =>
-						(date = new Date(Number(year), Number(month) - 1, 1).toISOString().slice(0, 7))}
-					>{'<'}</button>
-				<input class="form-control rounded-0 border-0 z-1" type="month" bind:value={date} />
-				<button
-					title="текущий месяц"
-					class="btn btn-light text-dark border-0 rounded-0 p-2"
-					onclick={() => (date = new Date().toISOString().slice(0, 7))}>!</button>
-				<button
-					title="следующий месяц"
-					class="btn btn-light text-dark border-0 rounded-0 p-2 rounded-end justify-content-center"
-					onclick={() =>
-						(date = new Date(Number(year), Number(month) + 1, 1).toISOString().slice(0, 7))}
-					>{'>'}</button>
-			</div>
-		</div>
+		<MonthPicker title="на дату:" bind:date bind:month bind:year />
 	</div>
 </Title>
 
