@@ -47,7 +47,7 @@
 	</div>
 </Title>
 
-<div class="d-flex flex-column mt-3 rounded bg-light">
+<div class="d-flex flex-column rounded bg-light">
 	{#if daysInDataMonth > 0}
 		<div class="no-print" style="display: grid; grid-template-columns: .15fr 1fr;">
 			<div class="text-end py-2 ps-3 pe-2" style="min-width: 8.2em;">

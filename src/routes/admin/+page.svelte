@@ -49,7 +49,7 @@
 </script>
 
 <Title title="Редактировать расписание">
-	<div class="flex-grow-1 d-flex justify-content-between gap-1 ms-3">
+	<div class="flex-grow-1 d-flex align-items-center justify-content-between gap-1 ms-3">
 		<MonthPicker title="на дату:" bind:date bind:month bind:year />
 		<button
 			class="btn btn-dark text-light"
@@ -68,7 +68,7 @@
 	</div>
 </Title>
 
-<div class="d-flex flex-column mt-3 rounded">
+<div class="d-flex flex-column rounded">
 	{#each Object.entries(dataMonth) as [date, item], i}
 		<div
 			class={`d-flex 

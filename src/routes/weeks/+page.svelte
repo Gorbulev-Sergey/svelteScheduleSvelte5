@@ -103,7 +103,7 @@
 </script>
 
 <Title title={'Выборка по неделям за ' + year + ' год'}>
-	<div class="d-inline-flex gap-1 pt-2 ms-3">
+	<div class="d-inline-flex gap-1 pt-1 ms-3">
 		<WeekPicker
 			title="от:"
 			bind:min={weekPicker.min}
@@ -127,7 +127,7 @@
 	</div>
 </Title>
 
-<div class="d-flex flex-column mt-3 rounded bg-light">
+<div class="d-flex flex-column rounded bg-light">
 	{#if Object.keys(dataSchedule).length > 0}
 		<div class="no-print" style="display: grid; grid-template-columns: .15fr 1fr;">
 			<div class="text-end py-2 ps-3 pe-2" style="min-width: 8.2em;">
