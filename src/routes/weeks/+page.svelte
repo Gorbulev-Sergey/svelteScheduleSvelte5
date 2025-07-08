@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Picker from './../../lib/components/Picker.svelte';
 	import Title from '$lib/components/Title.svelte';
 	import type { IField } from '$lib/entityes/Field';
 	import { db } from '$lib/scripts/firebase';
@@ -13,7 +14,12 @@
 	let dataSchedule = $state<{ [date: string]: IField[] }>(
 		[] as unknown as { [date: string]: IField[] }
 	);
-	let weekPicker = $state({ low: getWeek(new Date()), min: 1, max: 52, up: getWeek(new Date()) });
+	let weekPicker = $state({
+		min: 1,
+		low: getWeek(new Date()),
+		up: getWeek(new Date()),
+		max: getWeeksInYear(year)
+	});
 
 	// Названия месяцев в именительном падеже
 	function monthToSring(date: Date) {
@@ -26,6 +32,7 @@
 			? monthToSring(date).replace('т', 'та')
 			: monthToSring(date).replace('ь', 'я');
 	}
+
 	function getWeek(date: Date) {
 		let week1 = new Date(date.getFullYear(), 0, 1);
 		return (
@@ -34,6 +41,21 @@
 				((date.getTime() - week1.getTime()) / 86400000 - 3 + ((week1.getDay() + 6) % 7)) / 7
 			)
 		);
+	}
+
+	// Колличество недель в году
+	function getWeeksInYear(year: number) {
+		// 1 января года
+		const firstDay = new Date(year, 0, 1);
+		// 31 декабря года
+		const lastDay = new Date(year, 11, 31);
+
+		// Номер недели для 31 декабря
+		const weeks = getWeek(lastDay);
+
+		// Если номер недели 1, значит последний день попал в первую неделю следующего года,
+		// значит в году 52 недели, иначе weeks = 52 или 53
+		return weeks === 1 ? 52 : weeks;
 	}
 
 	function getDatesByWeek(year: number, week: number) {
@@ -73,45 +95,49 @@
 
 	onMount(async () => {
 		let dates: string[] = [];
-		for (let w = weekPicker.low; w < weekPicker.up; w++) {
+		for (let w = weekPicker.low; w <= weekPicker.up; w++) {
 			dates = [...dates, ...getDatesByWeek(year, w)];
 		}
 		getScheduleByWeek(dates, dataSchedule);
 	});
 </script>
 
-<Title title="Выборка по неделям">
-	<div class="d-inline-flex rounded border border-light ms-3 mt-2">
-		<div class="bg-light text-dark p-2 rounded-start">от:</div>
+<Title title={'Выборка по неделям за ' + year + ' год'}>
+	<div class="d-inline-flex gap-1 pt-2 ms-3">
+		<Picker
+			title="от:"
+			bind:min={weekPicker.min}
+			bind:max={weekPicker.up}
+			bind:value={weekPicker.low} />
+		<Picker
+			title="до:"
+			bind:min={weekPicker.low}
+			bind:max={weekPicker.max}
+			bind:value={weekPicker.up} />
+		<!-- <div class="bg-light text-dark p-2 rounded-start">от:</div>
 		<input
 			class="form-control border-0 rounded-0 m-1 w-auto"
 			type="number"
 			min={weekPicker.min}
 			max={weekPicker.up}
-			bind:value={weekPicker.low}
-			onchange={() => {
-				let dates: string[] = [];
-				for (let w = weekPicker.low; w < weekPicker.up; w++) {
-					dates = [...dates, ...getDatesByWeek(year, w)];
-				}
-				dataSchedule = {};
-				getScheduleByWeek(dates, dataSchedule);
-			}} />
+			bind:value={weekPicker.low} />
 		<div class="bg-light text-dark p-2">до:</div>
 		<input
-			class="form-control border-0 rounded-start-0 m-1 w-auto"
+			class="form-control border-0 rounded-0 m-1 w-auto"
 			type="number"
 			min={weekPicker.low}
 			max={weekPicker.max}
-			bind:value={weekPicker.up}
-			onchange={() => {
+			bind:value={weekPicker.up} /> -->
+		<button
+			class="btn btn-light text-dark"
+			onclick={async () => {
 				let dates: string[] = [];
-				for (let w = weekPicker.low; w < weekPicker.up; w++) {
+				for (let w = weekPicker.low; w <= weekPicker.up; w++) {
 					dates = [...dates, ...getDatesByWeek(year, w)];
 				}
 				dataSchedule = {};
 				getScheduleByWeek(dates, dataSchedule);
-			}} />
+			}}>Получить</button>
 	</div>
 </Title>
 
