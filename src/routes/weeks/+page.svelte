@@ -72,32 +72,48 @@
 	}
 
 	onMount(async () => {
-		getScheduleByWeek(getDatesByWeek(year, week), dataSchedule);
+		let dates: string[] = [];
+		for (let w = weekPicker.low; w < weekPicker.up; w++) {
+			dates = [...dates, ...getDatesByWeek(year, w)];
+		}
+		getScheduleByWeek(dates, dataSchedule);
 	});
 </script>
 
-<Title title="Выборка по неделям" />
-
-<!-- <div class="d-flex">
-	{#each Array(daysInMonth) as item, i}
-		<div class="px-2">
-			{getWeek(new Date(`${year}-${month}-${i < 10 ? '0' : ''}${i + 1}`))}
-		</div>
-	{/each}
-</div> -->
-
-<div class="d-flex flex-column gap-2 mt-3">
-	<div>Список недель через запятую: (текущая неделя {getWeek(new Date())})</div>
-	<input
-		class="form-control"
-		type="number"
-		bind:value={week}
-		placeholder="номер недели"
-		onchange={() => {
-			dataSchedule = {};
-			getScheduleByWeek(getDatesByWeek(year, week), dataSchedule);
-		}} />
-</div>
+<Title title="Выборка по неделям">
+	<div class="d-inline-flex rounded border border-light ms-3 mt-2">
+		<div class="bg-light text-dark p-2 rounded-start">от:</div>
+		<input
+			class="form-control border-0 rounded-0 m-1 w-auto"
+			type="number"
+			min={weekPicker.min}
+			max={weekPicker.up}
+			bind:value={weekPicker.low}
+			onchange={() => {
+				let dates: string[] = [];
+				for (let w = weekPicker.low; w < weekPicker.up; w++) {
+					dates = [...dates, ...getDatesByWeek(year, w)];
+				}
+				dataSchedule = {};
+				getScheduleByWeek(dates, dataSchedule);
+			}} />
+		<div class="bg-light text-dark p-2">до:</div>
+		<input
+			class="form-control border-0 rounded-start-0 m-1 w-auto"
+			type="number"
+			min={weekPicker.low}
+			max={weekPicker.max}
+			bind:value={weekPicker.up}
+			onchange={() => {
+				let dates: string[] = [];
+				for (let w = weekPicker.low; w < weekPicker.up; w++) {
+					dates = [...dates, ...getDatesByWeek(year, w)];
+				}
+				dataSchedule = {};
+				getScheduleByWeek(dates, dataSchedule);
+			}} />
+	</div>
+</Title>
 
 <div class="d-flex flex-column mt-3 rounded bg-light">
 	{#if Object.keys(dataSchedule).length > 0}
@@ -153,21 +169,4 @@
 			<hr class="my-0 mx-4 p-0 border-secondary border-opacity-50" />
 		{/if}
 	{/each}
-</div>
-
-<div class=" d-inline-flex rounded border border-light mt-3">
-	<div class="bg-light text-dark p-2 rounded-start">от:</div>
-	<input
-		class="form-control border-0 rounded-0 m-1 w-auto"
-		type="number"
-		min={weekPicker.min}
-		max={weekPicker.up}
-		bind:value={weekPicker.low} />
-	<div class="bg-light text-dark p-2">до:</div>
-	<input
-		class="form-control border-0 rounded-start-0 m-1 w-auto"
-		type="number"
-		min={weekPicker.low}
-		max={weekPicker.max}
-		bind:value={weekPicker.up} />
 </div>
