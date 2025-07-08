@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Picker from './../../lib/components/Picker.svelte';
+	import WeekPicker from '$lib/components/WeekPicker.svelte';
 	import Title from '$lib/components/Title.svelte';
 	import type { IField } from '$lib/entityes/Field';
 	import { db } from '$lib/scripts/firebase';
@@ -104,12 +104,12 @@
 
 <Title title={'Выборка по неделям за ' + year + ' год'}>
 	<div class="d-inline-flex gap-1 pt-2 ms-3">
-		<Picker
+		<WeekPicker
 			title="от:"
 			bind:min={weekPicker.min}
 			bind:max={weekPicker.up}
 			bind:value={weekPicker.low} />
-		<Picker
+		<WeekPicker
 			title="до:"
 			bind:min={weekPicker.low}
 			bind:max={weekPicker.max}
