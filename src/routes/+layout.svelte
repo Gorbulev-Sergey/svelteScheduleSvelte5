@@ -2,6 +2,10 @@
 	import 'bootstrap/dist/css/bootstrap.min.css';
 
 	let { children } = $props();
+
+	Date.prototype.getRussianDayOfWeek = function (): string {
+		return this.toLocaleDateString('Ru-ru', { weekday: 'long' });
+	};
 </script>
 
 <div class="sticky-top">

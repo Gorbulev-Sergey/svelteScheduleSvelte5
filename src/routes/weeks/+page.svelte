@@ -13,6 +13,7 @@
 	let dataSchedule = $state<{ [date: string]: IField[] }>(
 		[] as unknown as { [date: string]: IField[] }
 	);
+	let weekPicker = $state({ low: getWeek(new Date()), min: 1, max: 52, up: getWeek(new Date()) });
 
 	// Названия месяцев в именительном падеже
 	function monthToSring(date: Date) {
@@ -152,4 +153,21 @@
 			<hr class="my-0 mx-4 p-0 border-secondary border-opacity-50" />
 		{/if}
 	{/each}
+</div>
+
+<div class=" d-inline-flex rounded border border-light mt-3">
+	<div class="bg-light text-dark p-2 rounded-start">от:</div>
+	<input
+		class="form-control border-0 rounded-0 m-1 w-auto"
+		type="number"
+		min={weekPicker.min}
+		max={weekPicker.up}
+		bind:value={weekPicker.low} />
+	<div class="bg-light text-dark p-2">до:</div>
+	<input
+		class="form-control border-0 rounded-start-0 m-1 w-auto"
+		type="number"
+		min={weekPicker.low}
+		max={weekPicker.max}
+		bind:value={weekPicker.up} />
 </div>
